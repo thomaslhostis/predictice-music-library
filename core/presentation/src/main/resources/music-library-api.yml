@@ -46,24 +46,24 @@ components:
           type: array
           description: All existing release years for the searched albums
           items:
-            $ref: '#/components/schemas/ReleaseYear'
+            $ref: '#/components/schemas/ReleaseYearResource'
         albums:
           type: array
           description: Found albums based on the search query
           items:
-            $ref: '#/components/schemas/Album'
+            $ref: '#/components/schemas/AlbumResource'
 
-    ReleaseYear:
+    ReleaseYearResource:
       type: object
       properties:
         year:
-          type: integer
+          type: string
           description: Album release year
         albumCount:
           type: integer
           description: Number of albums released for this year
 
-    Album:
+    AlbumResource:
       type: object
       properties:
         id:
@@ -76,7 +76,7 @@ components:
           type: string
           description: Album artist
         releaseYear:
-          type: integer
+          type: string
           description: Album release year
         coverUrl:
           type: string

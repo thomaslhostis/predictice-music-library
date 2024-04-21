@@ -5,6 +5,27 @@ info:
   version: 0.0.1-SNAPSHOT
 
 paths:
+
+  /albums:
+    post:
+      operationId: saveAlbums
+      summary: Save provided albums, overriding the existing ones
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/AlbumResource'
+      responses:
+        204:
+          description: OK
+        400:
+          description: Bad request, probably a wrong input
+        500:
+          description: Unexpected error
+
   /albums/search:
     get:
       operationId: searchAlbums
@@ -29,39 +50,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AlbumsSearchResult'
+                $ref: '#/components/schemas/AlbumsSearchResultResource'
         500:
           description: Unexpected error
 
 components:
   schemas:
-
-    AlbumsSearchResult:
-      type: object
-      properties:
-        resultCount:
-          type: integer
-          description: Total number of search results
-        releaseYears:
-          type: array
-          description: All existing release years for the searched albums
-          items:
-            $ref: '#/components/schemas/ReleaseYearResource'
-        albums:
-          type: array
-          description: Found albums based on the search query
-          items:
-            $ref: '#/components/schemas/AlbumResource'
-
-    ReleaseYearResource:
-      type: object
-      properties:
-        year:
-          type: string
-          description: Album release year
-        albumCount:
-          type: integer
-          description: Number of albums released for this year
 
     AlbumResource:
       type: object
@@ -81,3 +75,30 @@ components:
         coverUrl:
           type: string
           description: Album cover URL
+
+    AlbumsSearchResultResource:
+      type: object
+      properties:
+        resultCount:
+          type: integer
+          description: Total number of search results
+        albums:
+          type: array
+          description: Found albums based on the search query
+          items:
+            $ref: '#/components/schemas/AlbumResource'
+        releaseYears:
+          type: array
+          description: Number of occurrences of every found album release year
+          items:
+            $ref: '#/components/schemas/ReleaseYearResource'
+
+    ReleaseYearResource:
+      type: object
+      properties:
+        year:
+          type: string
+          description: Album release year
+        albumCount:
+          type: integer
+          description: Number of albums released for this year

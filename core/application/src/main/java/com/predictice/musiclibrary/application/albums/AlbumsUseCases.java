@@ -1,7 +1,8 @@
 package com.predictice.musiclibrary.application.albums;
 
-import com.predictice.musiclibrary.domain.albums.Album;
 import com.predictice.musiclibrary.domain.albums.AlbumsPort;
+import com.predictice.musiclibrary.domain.albums.model.Album;
+import com.predictice.musiclibrary.domain.albums.model.AlbumSearchResult;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,15 +15,15 @@ public class AlbumsUseCases {
         this.albumsPort = albumsPort;
     }
 
-    public List<Album> searchAlbums(
+    public void saveAlbums(List<Album> albums) {
+        albumsPort.saveAlbums(albums);
+    }
+
+    public AlbumSearchResult searchAlbums(
             String query,
             String year,
             String page
     ) {
         return albumsPort.searchAlbums(query, year, page);
-    }
-
-    public void saveAlbums(List<Album> albums) {
-        albumsPort.saveAlbums(albums);
     }
 }

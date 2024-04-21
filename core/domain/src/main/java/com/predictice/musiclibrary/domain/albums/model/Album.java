@@ -1,4 +1,4 @@
-package com.predictice.musiclibrary.domain.albums;
+package com.predictice.musiclibrary.domain.albums.model;
 
 public record Album(
         String id,
@@ -7,5 +7,4 @@ public record Album(
         String releaseYear,
         String coverUrl
 ) {
-
 }

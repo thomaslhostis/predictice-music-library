@@ -1,9 +1,10 @@
 package com.predictice.musiclibrary.presentation;
 
 import com.predictice.musiclibrary.application.albums.AlbumsUseCases;
-import com.predictice.musiclibrary.domain.albums.Album;
+import com.predictice.musiclibrary.domain.albums.model.Album;
+import com.predictice.musiclibrary.domain.albums.model.AlbumSearchResult;
 import com.predictice.musiclibrary.presentation.model.AlbumResource;
-import com.predictice.musiclibrary.presentation.model.AlbumsSearchResult;
+import com.predictice.musiclibrary.presentation.model.AlbumsSearchResultResource;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,20 +18,22 @@ public class AlbumsController implements AlbumsApi {
     }
 
     @Override
-    public AlbumsSearchResult searchAlbums(
+    public void saveAlbums(List<AlbumResource> albumResources) {
+        List<Album> albums = albumResources
+                .stream()
+                .map(AlbumResourceMapper::toAlbum)
+                .toList();
+
+        albumsUseCases.saveAlbums(albums);
+    }
+
+    @Override
+    public AlbumsSearchResultResource searchAlbums(
             String query,
             String year,
             String page
     ) {
-        List<Album> albums = albumsUseCases.searchAlbums(query, year, page);
-
-        List<AlbumResource> albumResources = albums
-                .stream()
-                .map(AlbumsMapper::toPresentationAlbum)
-                .toList();
-
-        return new AlbumsSearchResult()
-                .resultCount(12)
-                .albums(albumResources);
+        AlbumSearchResult albumSearchResult = albumsUseCases.searchAlbums(query, year, page);
+        return AlbumsSearchResultResourceMapper.toAlbumsSearchResultResource(albumSearchResult);
     }
 }

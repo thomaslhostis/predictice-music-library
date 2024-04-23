@@ -1,4 +1,4 @@
-package com.predictice.musiclibrary.presentation;
+package com.predictice.musiclibrary.presentation.mappers;
 
 import com.predictice.musiclibrary.domain.albums.model.AlbumSearchResult;
 import com.predictice.musiclibrary.presentation.model.AlbumResource;

@@ -43,7 +43,8 @@ paths:
         - name: page
           in: query
           schema:
-            type: string
+            type: integer
+            default: 1
       responses:
         200:
           description: OK

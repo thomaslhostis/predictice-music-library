@@ -21,9 +21,9 @@ public class AlbumsUseCases {
 
     public AlbumSearchResult searchAlbums(
             String query,
-            String year,
-            String page
+            String releaseYear,
+            Integer pageNumber
     ) {
-        return albumsPort.searchAlbums(query, year, page);
+        return albumsPort.findAlbums(query, releaseYear, pageNumber);
     }
 }

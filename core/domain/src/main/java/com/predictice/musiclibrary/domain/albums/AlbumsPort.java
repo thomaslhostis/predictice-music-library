@@ -9,9 +9,9 @@ public interface AlbumsPort {
 
     void saveAlbums(List<Album> albums);
 
-    AlbumSearchResult searchAlbums(
-            String query,
-            String year,
-            String page
+    AlbumSearchResult findAlbums(
+            String keyword,
+            String releaseYear,
+            int pageNumber
     );
 }

@@ -14,7 +14,7 @@ public class ElasticsearchConfiguration extends org.springframework.data.elastic
         return ClientConfiguration.builder()
                 .connectedTo("localhost:9200")
                 .usingSsl(buildSSLContext())
-                .withBasicAuth("elastic", "cJlA276q0m4Rxa=R87_j")
+                .withBasicAuth("elastic", "changeme")
                 .build();
     }
 

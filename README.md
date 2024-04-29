@@ -17,3 +17,4 @@ Start the service `elasticsearch` declared in [docker-compose.yml](docker-compos
 
 # Try it
 
+Access Swagger UI [here](http://localhost:8080/swagger-ui/index.html)

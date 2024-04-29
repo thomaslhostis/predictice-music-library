@@ -73,7 +73,7 @@ components:
         releaseYear:
           type: string
           description: Album release year
-        coverUrl:
+        coverURL:
           type: string
           description: Album cover URL
 

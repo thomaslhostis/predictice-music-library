@@ -48,13 +48,13 @@ public class AlbumsAdapter implements AlbumsPort {
             int pageNumber
     ) {
         Query query = buildCriteriaQuery(keyword, releaseYear);
-
         SearchHits<AlbumDocument> searchHits = findPageAlbumHits(pageNumber, query);
         List<Album> paginatedAlbums = searchHits.get()
                 .map(SearchHit::getContent)
                 .map(AlbumDocument::toAlbum)
                 .toList();
 
+        query = buildCriteriaQuery(keyword, null);
         List<ReleaseYear> releaseYears = findReleaseYears(query);
 
         return new AlbumSearchResult(
@@ -62,36 +62,6 @@ public class AlbumsAdapter implements AlbumsPort {
                 paginatedAlbums,
                 releaseYears
         );
-    }
-
-    /**
-     * En temps normal, j'aurais utilisé une requête Elasticsearch pour récupérer directement le nombre
-     * d'albums pour chaque année de sortie, pour la recherche en cours. Par manque de temps, je propose
-     * cette implémentation en Java.
-     */
-    private List<ReleaseYear> findReleaseYears(Query query) {
-        NativeQuery nativeQuery = new NativeQueryBuilder()
-                .withQuery(query)
-                .build();
-
-        return elasticsearchOperations.search(nativeQuery, AlbumDocument.class)
-                .get()
-                .map(SearchHit::getContent)
-                .collect(groupingBy(AlbumDocument::getReleaseYear, counting()))
-                .entrySet()
-                .stream()
-                .map(entry -> new ReleaseYear(entry.getKey(), entry.getValue().intValue()))
-                .toList();
-    }
-
-    private SearchHits<AlbumDocument> findPageAlbumHits(int pageNumber, Query query) {
-        Pageable twelveResultsPage = PageRequest.of(pageNumber - 1, 12);
-        NativeQuery nativeQuery = new NativeQueryBuilder()
-                .withQuery(query)
-                .withPageable(twelveResultsPage)
-                .build();
-
-        return elasticsearchOperations.search(nativeQuery, AlbumDocument.class);
     }
 
     private static Query buildCriteriaQuery(String keyword, String releaseYear) {
@@ -104,5 +74,36 @@ public class AlbumsAdapter implements AlbumsPort {
         }
 
         return new CriteriaQuery(criteria);
+    }
+
+    private SearchHits<AlbumDocument> findPageAlbumHits(int pageNumber, Query query) {
+        Pageable twelveResultsPage = PageRequest.of(pageNumber - 1, 12);
+        NativeQuery nativeQuery = new NativeQueryBuilder()
+                .withQuery(query)
+                .withPageable(twelveResultsPage)
+                .build();
+
+        return elasticsearchOperations.search(nativeQuery, AlbumDocument.class);
+    }
+
+    /**
+     * En temps normal, j'aurais utilisé une requête Elasticsearch pour récupérer directement le nombre
+     * d'albums pour chaque année de sortie, pour la recherche en cours. Par manque de temps, je propose
+     * cette implémentation en Java.
+     */
+    private List<ReleaseYear> findReleaseYears(Query query) {
+        NativeQuery nativeQuery = new NativeQueryBuilder()
+                .withQuery(query)
+                .withPageable(Pageable.unpaged())
+                .build();
+
+        return elasticsearchOperations.search(nativeQuery, AlbumDocument.class)
+                .get()
+                .map(SearchHit::getContent)
+                .collect(groupingBy(AlbumDocument::getReleaseYear, counting()))
+                .entrySet()
+                .stream()
+                .map(entry -> new ReleaseYear(entry.getKey(), entry.getValue().intValue()))
+                .toList();
     }
 }

@@ -10,7 +10,7 @@ public class AlbumResourceMapper {
                 .title(album.title())
                 .artist(album.artist())
                 .releaseYear(album.releaseYear())
-                .coverUrl(album.coverUrl());
+                .coverURL(album.coverUrl());
     }
 
     public static Album toAlbum(AlbumResource albumResource) {
@@ -19,7 +19,7 @@ public class AlbumResourceMapper {
                 albumResource.getTitle(),
                 albumResource.getArtist(),
                 albumResource.getReleaseYear(),
-                albumResource.getCoverUrl()
+                albumResource.getCoverURL()
         );
     }
 }
